@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant2Pack - Smart Sustainable Packaging</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'eco-green': '#4CAF50',
+                        'eco-light': '#A3D9A5',
+                        'eco-beige': '#F5F5DC',
+                        'eco-brown': '#7C4D27'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .bounce-arrow {
+            animation: bounce 2s infinite;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #A3D9A5 0%, #4CAF50 100%);
+        }
+        
+        .section-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-eco-green rounded-full flex items-center justify-center">
+                        <span class="text-white text-lg">🌱</span>
+                    </div>
+                    <h1 class="text-xl font-bold text-eco-green">Plant2Pack</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="text-gray-700 hover:text-eco-green transition-colors">Home</a>
+                    <a href="#problem" class="text-gray-700 hover:text-eco-green transition-colors">Problem</a>
+                    <a href="#tool" class="text-gray-700 hover:text-eco-green transition-colors">Find Packaging</a>
+                    <a href="#gallery" class="text-gray-700 hover:text-eco-green transition-colors">Gallery</a>
+                    <a href="#calculator" class="text-gray-700 hover:text-eco-green transition-colors">Impact</a>
+                    <a href="#about" class="text-gray-700 hover:text-eco-green transition-colors">About</a>
+                </div>
+                <button class="md:hidden text-eco-green" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#home" class="block text-gray-700 hover:text-eco-green transition-colors">Home</a>
+                <a href="#problem" class="block text-gray-700 hover:text-eco-green transition-colors">Problem</a>
+                <a href="#tool" class="block text-gray-700 hover:text-eco-green transition-colors">Find Packaging</a>
+                <a href="#gallery" class="block text-gray-700 hover:text-eco-green transition-colors">Gallery</a>
+                <a href="#calculator" class="block text-gray-700 hover:text-eco-green transition-colors">Impact</a>
+                <a href="#about" class="block text-gray-700 hover:text-eco-green transition-colors">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen gradient-bg flex items-center justify-center pt-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="fade-in">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mr-4">
+                        <span class="text-3xl">🌱</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-white">Plant2Pack</h1>
+                </div>
+                <p class="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto">
+                    From Nature, Back to Nature: Smart, Sustainable Packaging
+                </p>
+                <div class="mb-12">
+                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&h=400&fit=crop" 
+                         alt="Biodegradable package dissolving into soil" 
+                         class="mx-auto rounded-lg shadow-lg max-w-md w-full fade-in">
+                </div>
+                <p class="text-lg text-white mb-8 max-w-2xl mx-auto">
+                    Every year, 300 million tons of plastic waste pollute our planet. We're here to change that with smart, 
+                    biodegradable packaging solutions that protect your products while protecting our Earth.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <button onclick="scrollToSection('tool')" 
+                            class="bg-white text-eco-green px-8 py-3 rounded-full font-semibold hover-scale transition-all duration-300">
+                        Find My Packaging
+                    </button>
+                    <button onclick="scrollToSection('calculator')" 
+                            class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-eco-green transition-all duration-300">
+                        See My Impact
+                    </button>
+                </div>
+                <div class="bounce-arrow">
+                    <svg class="w-8 h-8 text-white mx-auto cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="scrollToSection('problem')">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem" class="py-20 bg-eco-beige">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 section-hidden" data-section="problem-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-eco-brown mb-6">The Problem We're Solving</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                    Our planet is drowning in packaging waste. It's time for a sustainable revolution.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="text-center section-hidden hover-lift transition-all duration-300" data-section="problem-1">
+                    <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl text-white">🌊</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-eco-brown mb-3">Plastic Pollution</h3>
+                    <p class="text-gray-700">8 million tons of plastic enter our oceans annually, harming marine life and ecosystems.</p>
+                </div>
+                
+                <div class="text-center section-hidden hover-lift transition-all duration-300" data-section="problem-2">
+                    <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl text-white">🌡️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-eco-brown mb-3">Climate Impact</h3>
+                    <p class="text-gray-700">Plastic production accounts for 3.4% of global greenhouse gas emissions.</p>
+                </div>
+                
+                <div class="text-center section-hidden hover-lift transition-all duration-300" data-section="problem-3">
+                    <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl text-white">🗑️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-eco-brown mb-3">Waste Overflow</h3>
+                    <p class="text-gray-700">Only 9% of plastic waste is recycled globally, the rest pollutes our environment.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mb-12 section-hidden" data-section="solution-header">
+                <h3 class="text-2xl md:text-3xl font-bold text-eco-green mb-8">Our Solution</h3>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg section-hidden hover-lift transition-all duration-300" data-section="solution-1">
+                    <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center mb-4">
+                        <span class="text-xl text-white">🌱</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-eco-brown mb-3">Biodegradable</h4>
+                    <p class="text-gray-700">Materials that naturally decompose within weeks, not centuries.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg section-hidden hover-lift transition-all duration-300" data-section="solution-2">
+                    <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center mb-4">
+                        <span class="text-xl text-white">🍃</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-eco-brown mb-3">Edible</h4>
+                    <p class="text-gray-700">Safe-to-eat packaging that eliminates waste entirely.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg section-hidden hover-lift transition-all duration-300" data-section="solution-3">
+                    <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center mb-4">
+                        <span class="text-xl text-white">🌿</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-eco-brown mb-3">Plant-Based</h4>
+                    <p class="text-gray-700">Made from renewable resources like seaweed, corn, and agricultural waste.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smart Recommendation Tool -->
+    <section id="tool" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 section-hidden" data-section="tool-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-eco-green mb-6">Smart Recommendation Tool</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                    Tell us about your product, and we'll recommend the perfect sustainable packaging solution.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Input Form -->
+                    <div class="section-hidden" data-section="tool-form">
+                        <div class="bg-gray-50 p-8 rounded-lg">
+                            <h3 class="text-xl font-semibold text-eco-brown mb-6">Product Details</h3>
+                            <form id="recommendation-form" class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Type</label>
+                                    <select id="product-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-eco-green focus:border-transparent">
+                                        <option value="">Select product type</option>
+                                        <option value="food">Food</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="medicine">Medicine</option>
+                                        <option value="cosmetics">Cosmetics</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Moisture Exposure</label>
+                                    <div class="flex space-x-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="moisture" value="wet" class="mr-2 text-eco-green">
+                                            <span>Wet</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="moisture" value="dry" class="mr-2 text-eco-green">
+                                            <span>Dry</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Duration of Use</label>
+                                    <select id="duration" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-eco-green focus:border-transparent">
+                                        <option value="">Select duration</option>
+                                        <option value="1-day">1 day</option>
+                                        <option value="1-week">1 week</option>
+                                        <option value="1-month">1 month</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Edibility Required?</label>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="edible" class="mr-2 text-eco-green">
+                                        <span>Yes, packaging should be edible</span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Budget</label>
+                                    <select id="budget" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-eco-green focus:border-transparent">
+                                        <option value="">Select budget range</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="w-full bg-eco-green text-white py-3 px-6 rounded-lg font-semibold hover-scale transition-all duration-300">
+                                    Get Recommendation
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommendation Result -->
+                    <div class="section-hidden" data-section="tool-result">
+                        <div id="recommendation-result" class="bg-eco-light/20 p-8 rounded-lg hidden">
+                            <h3 class="text-xl font-semibold text-eco-brown mb-6">Your Recommendation</h3>
+                            <div id="recommendation-card" class="bg-white p-6 rounded-lg shadow-lg">
+                                <!-- Recommendation content will be inserted here -->
+                            </div>
+                            <button onclick="scrollToSection('gallery')" class="mt-6 w-full bg-eco-brown text-white py-3 px-6 rounded-lg font-semibold hover-scale transition-all duration-300">
+                                See Mockup Gallery
+                            </button>
+                        </div>
+                        
+                        <div id="recommendation-placeholder" class="bg-eco-light/20 p-8 rounded-lg text-center">
+                            <div class="w-24 h-24 bg-eco-light rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-3xl">📦</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-eco-brown mb-4">Ready to Find Your Perfect Package?</h3>
+                            <p class="text-gray-700">Fill out the form to get a personalized sustainable packaging recommendation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Mockup Gallery -->
+    <section id="gallery" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 section-hidden" data-section="gallery-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-eco-green mb-6">Sustainable Packaging Gallery</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                    Explore our innovative biodegradable and edible packaging solutions in action.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden section-hidden hover-lift transition-all duration-300" data-section="gallery-1">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop" 
+                         alt="Seaweed-based food packaging" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-eco-brown mb-2">
+                            <span class="tooltip" data-tooltip="Made from marine algae, completely biodegradable">Seaweed Film Wrap</span>
+                        </h3>
+                        <p class="text-gray-700 text-sm mb-4">Perfect for fresh produce, decomposes in 4-6 weeks</p>
+                        <button onclick="showARView('seaweed')" class="text-eco-green font-medium hover:underline">View in AR</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden section-hidden hover-lift transition-all duration-300" data-section="gallery-2">
+                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop" 
+                         alt="Corn starch packaging" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-eco-brown mb-2">
+                            <span class="tooltip" data-tooltip="Made from corn starch, compostable and edible">Corn Starch Containers</span>
+                        </h3>
+                        <p class="text-gray-700 text-sm mb-4">Ideal for takeout food, edible and compostable</p>
+                        <button onclick="showARView('corn')" class="text-eco-green font-medium hover:underline">View in AR</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden section-hidden hover-lift transition-all duration-300" data-section="gallery-3">
+                    <img src="https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=400&h=300&fit=crop" 
+                         alt="Mushroom packaging" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-eco-brown mb-2">
+                            <span class="tooltip" data-tooltip="Grown from mushroom roots, stronger than styrofoam">Mycelium Packaging</span>
+                        </h3>
+                        <p class="text-gray-700 text-sm mb-4">Protective cushioning for electronics, fully biodegradable</p>
+                        <button onclick="showARView('mushroom')" class="text-eco-green font-medium hover:underline">View in AR</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden section-hidden hover-lift transition-all duration-300" data-section="gallery-4">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=300&fit=crop" 
+                         alt="Bagasse packaging" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-eco-brown mb-2">
+                            <span class="tooltip" data-tooltip="Made from sugarcane waste, heat and moisture resistant">Bagasse Containers</span>
+                        </h3>
+                        <p class="text-gray-700 text-sm mb-4">Heat-resistant food containers from sugarcane waste</p>
+                        <button onclick="showARView('bagasse')" class="text-eco-green font-medium hover:underline">View in AR</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden section-hidden hover-lift transition-all duration-300" data-section="gallery-5">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop" 
+                         alt="Edible packaging" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-eco-brown mb-2">Edible Rice Paper</h3>
+                        <p class="text-gray-700 text-sm mb-4">Transparent, edible wrapping for snacks and confections</p>
+                        <button onclick="showARView('rice')" class="text-eco-green font-medium hover:underline">View in AR</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden section-hidden hover-lift transition-all duration-300" data-section="gallery-6">
+                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop" 
+                         alt="Jute packaging" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-eco-brown mb-2">Jute Fiber Wrap</h3>
+                        <p class="text-gray-700 text-sm mb-4">Durable natural fiber packaging for heavy items</p>
+                        <button onclick="showARView('jute')" class="text-eco-green font-medium hover:underline">View in AR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Eco Impact Calculator -->
+    <section id="calculator" class="py-20 bg-eco-green text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 section-hidden" data-section="calculator-header">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Eco Impact Calculator</h2>
+                <p class="text-lg max-w-3xl mx-auto opacity-90">
+                    See the real environmental impact of switching to sustainable packaging.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="section-hidden" data-section="calculator-input">
+                        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-6">Calculate Your Impact</h3>
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium mb-2">Number of units to package</label>
+                                <input type="number" id="units-input" min="1" value="100" 
+                                       class="w-full p-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                                       placeholder="Enter number of units"
+                                       oninput="calculateImpact()">
+                            </div>
+                            <p class="text-sm opacity-80">
+                                Enter the number of items you need to package to see your environmental savings.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="section-hidden" data-section="calculator-results">
+                        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-6">Your Environmental Savings</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2" id="plastic-saved">1,500g</div>
+                                    <div class="text-sm opacity-80">Plastic Saved</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2" id="bags-avoided">300</div>
+                                    <div class="text-sm opacity-80">Plastic Bags Avoided</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2" id="co2-saved">2.0kg</div>
+                                    <div class="text-sm opacity-80">CO₂ Saved</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2" id="trees-planted">0.09</div>
+                                    <div class="text-sm opacity-80">Equivalent Trees Planted</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12 section-hidden" data-section="calculator-cta">
+                    <div class="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Ready to Make a Difference?</h3>
+                        <p class="text-lg opacity-90 mb-6">
+                            Switch to sustainable packaging today — it's easier than you think.
+                        </p>
+                        <button onclick="scrollToSection('about')" 
+                                class="bg-white text-eco-green px-8 py-3 rounded-full font-semibold hover-scale transition-all duration-300">
+                            Get Started Today
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About / Contact -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 section-hidden" data-section="about-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-eco-green mb-6">About Plant2Pack</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                    We're on a mission to revolutionize packaging through nature-inspired solutions that protect both your products and our planet.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="bg-eco-beige p-8 rounded-lg section-hidden" data-section="mission">
+                    <h3 class="text-2xl font-semibold text-eco-brown mb-4">Our Mission</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        At Plant2Pack, we believe that sustainable packaging shouldn't be a compromise. Our smart recommendation platform 
+                        connects businesses with cutting-edge biodegradable and edible packaging solutions that perform as well as 
+                        traditional materials while leaving zero environmental footprint. We're building a future where every package 
+                        returns to nature, creating a truly circular economy.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="text-center section-hidden" data-section="team-1">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" 
+                         alt="Team member" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h4 class="text-lg font-semibold text-eco-brown mb-2">Alex Chen</h4>
+                    <p class="text-eco-green font-medium mb-2">CEO & Founder</p>
+                    <p class="text-gray-700 text-sm">Former sustainability consultant with 10+ years in green technology innovation.</p>
+                </div>
+                
+                <div class="text-center section-hidden" data-section="team-2">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face" 
+                         alt="Team member" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h4 class="text-lg font-semibold text-eco-brown mb-2">Dr. Maria Rodriguez</h4>
+                    <p class="text-eco-green font-medium mb-2">Chief Science Officer</p>
+                    <p class="text-gray-700 text-sm">Materials scientist specializing in biodegradable polymers and edible packaging.</p>
+                </div>
+                
+                <div class="text-center section-hidden" data-section="team-3">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" 
+                         alt="Team member" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h4 class="text-lg font-semibold text-eco-brown mb-2">James Park</h4>
+                    <p class="text-eco-green font-medium mb-2">Head of Technology</p>
+                    <p class="text-gray-700 text-sm">Full-stack developer passionate about using technology for environmental impact.</p>
+                </div>
+            </div>
+            
+            <div class="max-w-2xl mx-auto section-hidden" data-section="contact-form">
+                <div class="bg-gray-50 p-8 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-eco-brown mb-6 text-center">Get in Touch</h3>
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-eco-green focus:border-transparent" 
+                                       placeholder="Your name" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-eco-green focus:border-transparent" 
+                                       placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                            <textarea rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-eco-green focus:border-transparent" 
+                                      placeholder="Tell us about your packaging needs..." required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-eco-green text-white py-3 px-6 rounded-lg font-semibold hover-scale transition-all duration-300">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-eco-brown text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-eco-green rounded-full flex items-center justify-center">
+                            <span class="text-white text-lg">🌱</span>
+                        </div>
+                        <h3 class="text-xl font-bold">Plant2Pack</h3>
+                    </div>
+                    <p class="text-sm opacity-80">
+                        Smart, sustainable packaging solutions for a greener future.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm opacity-80">
+                        <li><a href="#home" class="hover:text-eco-light transition-colors">Home</a></li>
+                        <li><a href="#tool" class="hover:text-eco-light transition-colors">Find Packaging</a></li>
+                        <li><a href="#calculator" class="hover:text-eco-light transition-colors">Impact Calculator</a></li>
+                        <li><a href="#about" class="hover:text-eco-light transition-colors">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Solutions</h4>
+                    <ul class="space-y-2 text-sm opacity-80">
+                        <li>Biodegradable Packaging</li>
+                        <li>Edible Packaging</li>
+                        <li>Plant-Based Materials</li>
+                        <li>Custom Solutions</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 bg-eco-green rounded-full flex items-center justify-center hover-scale transition-all duration-300">
+                            <span class="text-sm">📧</span>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-eco-green rounded-full flex items-center justify-center hover-scale transition-all duration-300">
+                            <span class="text-sm">🐦</span>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-eco-green rounded-full flex items-center justify-center hover-scale transition-all duration-300">
+                            <span class="text-sm">💼</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 pt-8 text-center">
+                <p class="text-sm opacity-80">
+                    © 2025 Plant2Pack. All rights reserved. Made with 🌱 for a sustainable future.
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- AR View Modal -->
+    <div id="ar-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-eco-brown" id="ar-title">AR View</h3>
+                    <button onclick="closeARView()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="text-center">
+                    <img id="ar-image" src="" alt="AR View" class="mx-auto rounded-lg shadow-lg max-w-full">
+                    <p class="mt-4 text-gray-700" id="ar-description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Packaging recommendation data
+        const packagingData = {
+            food: {
+                wet: {
+                    '1-day': { material: 'Edible Rice Paper', edible: true, decomposition: 1, score: 9, compostability: 'High' },
+                    '1-week': { material: 'Seaweed Film Wrap', edible: true, decomposition: 30, score: 9, compostability: 'High' },
+                    '1-month': { material: 'Corn Starch Container', edible: true, decomposition: 45, score: 8, compostability: 'High' }
+                },
+                dry: {
+                    '1-day': { material: 'Edible Rice Paper', edible: true, decomposition: 1, score: 10, compostability: 'High' },
+                    '1-week': { material: 'Bagasse Container', edible: false, decomposition: 60, score: 8, compostability: 'High' },
+                    '1-month': { material: 'Jute Fiber Wrap', edible: false, decomposition: 90, score: 7, compostability: 'Medium' }
+                }
+            },
+            electronics: {
+                wet: {
+                    '1-day': { material: 'Mycelium Packaging', edible: false, decomposition: 30, score: 8, compostability: 'High' },
+                    '1-week': { material: 'Mycelium Packaging', edible: false, decomposition: 30, score: 8, compostability: 'High' },
+                    '1-month': { material: 'Corn Starch Foam', edible: false, decomposition: 60, score: 7, compostability: 'Medium' }
+                },
+                dry: {
+                    '1-day': { material: 'Mycelium Packaging', edible: false, decomposition: 30, score: 9, compostability: 'High' },
+                    '1-week': { material: 'Mycelium Packaging', edible: false, decomposition: 30, score: 9, compostability: 'High' },
+                    '1-month': { material: 'Bagasse Container', edible: false, decomposition: 60, score: 8, compostability: 'High' }
+                }
+            },
+            medicine: {
+                wet: {
+                    '1-day': { material: 'Seaweed Film Wrap', edible: true, decomposition: 30, score: 8, compostability: 'High' },
+                    '1-week': { material: 'Corn Starch Container', edible: false, decomposition: 45, score: 7, compostability: 'High' },
+                    '1-month': { material: 'Bagasse Container', edible: false, decomposition: 60, score: 7, compostability: 'High' }
+                },
+                dry: {
+                    '1-day': { material: 'Edible Rice Paper', edible: true, decomposition: 1, score: 9, compostability: 'High' },
+                    '1-week': { material: 'Corn Starch Container', edible: false, decomposition: 45, score: 8, compostability: 'High' },
+                    '1-month': { material: 'Jute Fiber Wrap', edible: false, decomposition: 90, score: 7, compostability: 'Medium' }
+                }
+            },
+            cosmetics: {
+                wet: {
+                    '1-day': { material: 'Seaweed Film Wrap', edible: false, decomposition: 30, score: 8, compostability: 'High' },
+                    '1-week': { material: 'Corn Starch Container', edible: false, decomposition: 45, score: 8, compostability: 'High' },
+                    '1-month': { material: 'Bagasse Container', edible: false, decomposition: 60, score: 7, compostability: 'High' }
+                },
+                dry: {
+                    '1-day': { material: 'Corn Starch Container', edible: false, decomposition: 45, score: 8, compostability: 'High' },
+                    '1-week': { material: 'Bagasse Container', edible: false, decomposition: 60, score: 8, compostability: 'High' },
+                    '1-month': { material: 'Jute Fiber Wrap', edible: false, decomposition: 90, score: 7, compostability: 'Medium' }
+                }
+            },
+            other: {
+                wet: {
+                    '1-day': { material: 'Seaweed Film Wrap', edible: false, decomposition: 30, score: 7, compostability: 'High' },
+                    '1-week': { material: 'Mycelium Packaging', edible: false, decomposition: 30, score: 8, compostability: 'High' },
+                    '1-month': { material: 'Bagasse Container', edible: false, decomposition: 60, score: 7, compostability: 'High' }
+                },
+                dry: {
+                    '1-day': { material: 'Corn Starch Container', edible: false, decomposition: 45, score: 8, compostability: 'High' },
+                    '1-week': { material: 'Bagasse Container', edible: false, decomposition: 60, score: 8, compostability: 'High' },
+                    '1-month': { material: 'Jute Fiber Wrap', edible: false, decomposition: 90, score: 7, compostability: 'Medium' }
+                }
+            }
+        };
+
+        // AR View data
+        const arData = {
+            seaweed: {
+                title: 'Seaweed Film Wrap - AR View',
+                image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop',
+                description: 'This innovative seaweed-based packaging is made from marine algae and is completely biodegradable. It provides excellent moisture barrier properties while being safe for marine life.'
+            },
+            corn: {
+                title: 'Corn Starch Container - AR View',
+                image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=400&fit=crop',
+                description: 'Made from renewable corn starch, these containers are both compostable and edible. Perfect for food service applications with excellent heat resistance.'
+            },
+            mushroom: {
+                title: 'Mycelium Packaging - AR View',
+                image: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=600&h=400&fit=crop',
+                description: 'Grown from mushroom roots, this packaging is stronger than styrofoam yet completely biodegradable. Ideal for protective packaging of fragile items.'
+            },
+            bagasse: {
+                title: 'Bagasse Container - AR View',
+                image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&h=400&fit=crop',
+                description: 'Made from sugarcane waste, bagasse containers are heat and moisture resistant, making them perfect for hot food applications while being fully compostable.'
+            },
+            rice: {
+                title: 'Edible Rice Paper - AR View',
+                image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop',
+                description: 'Transparent and completely edible, rice paper packaging dissolves harmlessly and can be consumed along with the product, eliminating waste entirely.'
+            },
+            jute: {
+                title: 'Jute Fiber Wrap - AR View',
+                image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=400&fit=crop',
+                description: 'Natural jute fibers provide durable, breathable packaging perfect for heavy items. Completely biodegradable and sourced from sustainable agriculture.'
+            }
+        };
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Recommendation form handler
+        document.getElementById('recommendation-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const productType = document.getElementById('product-type').value;
+            const moisture = document.querySelector('input[name="moisture"]:checked')?.value;
+            const duration = document.getElementById('duration').value;
+            const edible = document.getElementById('edible').checked;
+            const budget = document.getElementById('budget').value;
+            
+            if (!productType || !moisture || !duration || !budget) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            let recommendation = packagingData[productType]?.[moisture]?.[duration];
+            
+            if (!recommendation) {
+                recommendation = {
+                    material: 'Custom Solution Needed',
+                    edible: false,
+                    decomposition: 60,
+                    score: 7,
+                    compostability: 'Medium'
+                };
+            }
+            
+            // Adjust recommendation based on edibility requirement
+            if (edible && !recommendation.edible) {
+                if (productType === 'food') {
+                    recommendation = {
+                        material: 'Edible Rice Paper',
+                        edible: true,
+                        decomposition: 1,
+                        score: 9,
+                        compostability: 'High'
+                    };
+                }
+            }
+            
+            // Adjust score based on budget
+            let adjustedScore = recommendation.score;
+            if (budget === 'low') adjustedScore = Math.max(6, adjustedScore - 1);
+            if (budget === 'high') adjustedScore = Math.min(10, adjustedScore + 1);
+            
+            displayRecommendation(recommendation, adjustedScore);
+        });
+
+        function displayRecommendation(rec, score) {
+            const resultDiv = document.getElementById('recommendation-result');
+            const placeholderDiv = document.getElementById('recommendation-placeholder');
+            const cardDiv = document.getElementById('recommendation-card');
+            
+            cardDiv.innerHTML = `
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center mr-4">
+                        <span class="text-white text-xl">📦</span>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-eco-brown">${rec.material}</h4>
+                        <p class="text-eco-green font-medium">${rec.edible ? 'Edible' : 'Non-edible'} • ${rec.compostability} Compostability</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="text-center p-3 bg-eco-light/20 rounded-lg">
+                        <div class="text-2xl font-bold text-eco-green">${rec.decomposition}</div>
+                        <div class="text-sm text-gray-600">Days to Decompose</div>
+                    </div>
+                    <div class="text-center p-3 bg-eco-light/20 rounded-lg">
+                        <div class="text-2xl font-bold text-eco-green">${score}/10</div>
+                        <div class="text-sm text-gray-600">Environmental Score</div>
+                    </div>
+                </div>
+                <div class="bg-eco-beige p-4 rounded-lg">
+                    <h5 class="font-semibold text-eco-brown mb-2">Why This Material?</h5>
+                    <p class="text-sm text-gray-700">
+                        ${getRecommendationReason(rec.material)}
+                    </p>
+                </div>
+            `;
+            
+            placeholderDiv.classList.add('hidden');
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('fade-in-up');
+        }
+
+        function getRecommendationReason(material) {
+            const reasons = {
+                'Edible Rice Paper': 'Perfect for short-term use with zero waste. The packaging can be consumed along with the product.',
+                'Seaweed Film Wrap': 'Excellent moisture barrier properties while being completely marine-safe and biodegradable.',
+                'Corn Starch Container': 'Heat-resistant and compostable, ideal for food applications with good structural integrity.',
+                'Mycelium Packaging': 'Grown from mushroom roots, providing superior protection while being completely biodegradable.',
+                'Bagasse Container': 'Made from sugarcane waste, offering excellent heat and moisture resistance for demanding applications.',
+                'Jute Fiber Wrap': 'Natural fiber packaging perfect for heavy items, providing durability with complete biodegradability.',
+                'Custom Solution Needed': 'Your specific requirements need a tailored approach. Contact us for a custom sustainable solution.'
+            };
+            return reasons[material] || 'This material offers the best balance of performance and sustainability for your needs.';
+        }
+
+        // Impact calculator
+        function calculateImpact() {
+            const units = parseInt(document.getElementById('units-input').value) || 0;
+            
+            const plasticSaved = units * 15; // grams
+            const bagsAvoided = Math.floor(plasticSaved / 5);
+            const co2Saved = units * 0.02; // kg
+            const treesPlanted = co2Saved / 21.77;
+            
+            document.getElementById('plastic-saved').textContent = `${plasticSaved.toLocaleString()}g`;
+            document.getElementById('bags-avoided').textContent = bagsAvoided.toLocaleString();
+            document.getElementById('co2-saved').textContent = `${co2Saved.toFixed(1)}kg`;
+            document.getElementById('trees-planted').textContent = treesPlanted.toFixed(2);
+        }
+
+        // AR View functions
+        function showARView(type) {
+            const modal = document.getElementById('ar-modal');
+            const title = document.getElementById('ar-title');
+            const image = document.getElementById('ar-image');
+            const description = document.getElementById('ar-description');
+            
+            const data = arData[type];
+            if (data) {
+                title.textContent = data.title;
+                image.src = data.image;
+                image.alt = data.title;
+                description.textContent = data.description;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeARView() {
+            document.getElementById('ar-modal').classList.add('hidden');
+        }
+
+        // Contact form handler
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.');
+            this.reset();
+        });
+
+        // Scroll animations
+        function handleScrollAnimations() {
+            const sections = document.querySelectorAll('.section-hidden');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('section-hidden');
+                        entry.target.classList.add('section-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            handleScrollAnimations();
+            calculateImpact(); // Initialize calculator with default value
+            
+            // Smooth scroll for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Close mobile menu when clicking on links
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Close AR modal when clicking outside
+        document.getElementById('ar-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeARView();
+            }
+        });
+    </script>
+</body>
+</html>
